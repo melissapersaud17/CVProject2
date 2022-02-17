@@ -65,6 +65,10 @@ int Concavity::getMaxHeight(){
     return this->maxHeight;
 }
 
+void Concavity::setGraph(int *displayGraph){
+    this->displayGraphs = displayGraph;
+}
+
 
 //loads the histogram array and then returns the max height
 int Concavity::loadHist(ifstream& inFile){
@@ -101,4 +105,23 @@ int Concavity::loadHist(ifstream& inFile){
     }
 
     return maxHeight;
+}
+
+//display the histogram to the outfile 
+void Concavity::dispHist(ofstream& outFile){
+    int *pointer2 = (this->getArray());
+        
+    outFile << "2D Display of histogram " << endl;
+    if(outFile.is_open()){
+        for (int i = 0; i < this->getMax() + 1; i++){
+            outFile <<  i  << " " << "(" << pointer2[i] << "):";
+
+            for(int x = 0; x < pointer2[i]; x++){
+                outFile << "+"; 
+            }
+
+            outFile << endl;
+        }
+    }
+
 }

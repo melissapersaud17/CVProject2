@@ -3,6 +3,9 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#define width 10
+#define height 15
+
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -16,15 +19,17 @@ int main(int argc, char* argv[]){
     inFile1.open(file1);
 
     //inFile2
+    string file2 = argv[2];
     ifstream inFile2;
-    inFile2.open(argv[2]);
+    inFile2.open(file2);
 
-    // //outFile
-    // ifstream outFile;
-    // outFile.open(argv[3]);
+    //outFile
+    string outFile1 = argv[3];
+    ofstream outFile;
+    outFile.open(outFile1);
 
     //read in numRows, numCols, minVal, maxVal
-    int imageHeader[4] = {0};
+    int *imageHeader = new int[4]();
 
     int number;
     string line;
@@ -47,13 +52,15 @@ int main(int argc, char* argv[]){
             co.setCols(imageHeader[1]);
             co.setMin(imageHeader[2]);
             co.setMax(imageHeader[3]);
+
+            delete[] imageHeader;
    }
 
    //reading in file2
-   int peakPoints[4] = {0};
+   int *peakPoints = new int[4]();
 
    if(inFile2.good()){
-        getline(inFile1, line);
+        getline(inFile2, line);
 
         iss.clear();
         iss.str(line);
@@ -65,11 +72,14 @@ int main(int argc, char* argv[]){
             i++;
         }
 
-        co.setRows(peakPoints[0]);
-        co.setCols(peakPoints[1]);
-        co.setMin(peakPoints[2]);
-        co.setMax(peakPoints[3]);
+        co.setX1(peakPoints[0]);
+        co.setY1(peakPoints[1]);
+        co.setX2(peakPoints[2]);
+        co.setY2(peakPoints[3]);
+
+        delete[] peakPoints;
     }
+
 
     //creates and initializes the histAry
     int size = co.getMax() + 1;
@@ -82,9 +92,15 @@ int main(int argc, char* argv[]){
     //dynamically allocate displayGraph array and initalizes it 
     const int rows = co.getMax()+1;
     const int columns = co.getMaxHeight() + 1;
-    //int *display = new int[rows][columns]();
+    int *displayG = new int[rows*columns]();  
+    co.setGraph(displayG);
 
+    co.dispHist(outFile);
+
+    //calculating the slope and y-intercept
     
+
+
 
 
 
