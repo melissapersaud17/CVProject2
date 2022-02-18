@@ -31,11 +31,12 @@ class Concavity{
         //constructor
         Concavity();
 
-        //setter methods for rows, columns, min and max
+        //setter methods for rows, columns, min and max; getter method for maxVal
         void setRows(int rows);
         void setCols(int cols);
         void setMin(int min);
         void setMax(int max);
+        int getMax();
 
         //setter method for histogram array 
         void setArray(int *histogramArray);
@@ -45,15 +46,26 @@ class Concavity{
         void setY1(int y1);
         void setX2(int x2);
         void setY2(int y2);
+        int getX1();
+        int getX2();
+        int getY1();
+        int getY2();
 
+        //setter and getter method for setting the slope
+        void setSlope(double slope);
+        double getSlope();
+
+        //setter and getter method for the y-intercept
+        void setYIntercept(double yint);
+        double getYIntercept();
+        
         //getter methods for obtaining the maxVal 
-        int getMax();
-        int getRows();
+        //int getRows();
 
         //setter method for displayGraph
         void setGraph(int *displayGraph);
 
-
+        //setter and getter for maxHeight
         void setMaxHeight(int maxHeight);
         int getMaxHeight();
 
@@ -64,9 +76,9 @@ class Concavity{
 
         void dispHist(ofstream& outFile);
 
-        int DeepestConcavity();
+        int DeepestConcavity(int x1, int x2, double slope, double yIntercept, int *displayGraph);
 
-        void plotOneRow();
+        void plotOneRow(int x, int y, int *displayGraph);
 
         void printGraph();
 

@@ -97,7 +97,13 @@ int main(int argc, char* argv[]){
 
     co.dispHist(outFile);
 
-    //calculating the slope and y-intercept
+    //calculating the slope
+    double rise = co.getY2() - co.getY1();
+    double run = co.getX2() - co.getX1();
+    co.setSlope(rise/run);
+
+    //calculating the y-intercept
+    double yIntercept = co.getY1() - (co.getSlope() * co.getX1());
     
 
 
