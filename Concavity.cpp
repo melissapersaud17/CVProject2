@@ -105,8 +105,17 @@ int Concavity::getMaxHeight(){
     return this->maxHeight;
 }
 
-void Concavity::setGraph(int *displayGraph){
+void Concavity::setGraph(int **displayGraph){
     this->displayGraphs = displayGraph;
+}
+
+//setter and getter for threshold value
+void Concavity::setThrVal(int threshold){
+    this->bestThrVal = threshold;
+}
+
+int Concavity::getThrValue(){
+    return this->bestThrVal;
 }
 
 
@@ -168,22 +177,52 @@ void Concavity::dispHist(ofstream& outFile){
 
 //deepestConcavity method
 
-int Concavity::DeepestConcavity(int x1, int x2, double slope, double yIntercept, int *displayGraph){
+int Concavity::DeepestConcavity(int x1, int x2, double slope, double yIntercept, int **displayGraph){
     int max = 0;
     int first = x1;
     int second = x2;
     int x = first;
     int thr = first;
 
-    int y = m * x + b;
-    
-    plotOneRow(x,y,this->displayGraphs);
+    while(x <= second){
+        cout << "inside concavity " <<endl;
+        int y = (slope * x) + yIntercept;
+
+        cout << "inside concavity y = " << y << endl;
+        
+        plotOneRow(x,y,displayGraph);
+
+        int gap = abs(this->histAry[x] - y);
+        cout << "gap is " << gap << endl;
+        if(gap > max){
+            max = gap;
+            thr = x;
+            x++;
+        }
+    }
+
+    return thr;
 }
 
 //plotRow method
-void Concavity::plotOneRow(int x, int y, int *displayGraph){
+void Concavity::plotOneRow(int x, int y, int **displayGraph){
     int index = min(this->histAry[x],y);
-    int last = max(histAry[x],y);
+    int last = max(this->histAry[x],y);
+
+    cout << "inside plotonerow method " <<endl;
+    cout << "index is " << index << endl;
+    cout << "last is " << last << endl;
+
+    while(index <= last){
+        cout << "inside plotonerow while loop " <<endl;
+
+        this->displayGraphs[x][index] = 3;
+        index++;
+    }
+
+    cout << "index after is " << index << endl;
+    this->displayGraphs[x][this->histAry[x]] = 1;
+    this->displayGraphs[x][last] = 2;
 
     
 

@@ -25,7 +25,7 @@ class Concavity{
         int maxHeight;
         int bestThrVal;
 
-        int *displayGraphs;
+        int **displayGraphs;
 
     public:
         //constructor
@@ -63,7 +63,7 @@ class Concavity{
         //int getRows();
 
         //setter method for displayGraph
-        void setGraph(int *displayGraph);
+        void setGraph(int **displayGraph);
 
         //setter and getter for maxHeight
         void setMaxHeight(int maxHeight);
@@ -71,14 +71,18 @@ class Concavity{
 
         int* getArray();
 
+        //setter for bestThrVal;
+        void setThrVal(int threshold);
+        int getThrValue();
+
 
         int loadHist(ifstream& inFile);
 
         void dispHist(ofstream& outFile);
 
-        int DeepestConcavity(int x1, int x2, double slope, double yIntercept, int *displayGraph);
+        int DeepestConcavity(int x1, int x2, double slope, double yIntercept, int **displayGraph);
 
-        void plotOneRow(int x, int y, int *displayGraph);
+       void plotOneRow(int x, int y, int **displayGraph);
 
         void printGraph();
 

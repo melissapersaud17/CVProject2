@@ -92,7 +92,12 @@ int main(int argc, char* argv[]){
     //dynamically allocate displayGraph array and initalizes it 
     const int rows = co.getMax()+1;
     const int columns = co.getMaxHeight() + 1;
-    int *displayG = new int[rows*columns]();  
+    int **displayG =  new int*[rows];
+
+    for(int i = 0; i < rows; i++){
+        displayG[i] = new int[columns];
+    }
+
     co.setGraph(displayG);
 
     co.dispHist(outFile);
@@ -102,13 +107,13 @@ int main(int argc, char* argv[]){
     double run = co.getX2() - co.getX1();
     co.setSlope(rise/run);
 
+
     //calculating the y-intercept
     double yIntercept = co.getY1() - (co.getSlope() * co.getX1());
-    
+    co.setYIntercept(yIntercept);
 
 
-
-
+    co.DeepestConcavity(co.getX1(),co.getX2(), co.getSlope(), co.getYIntercept(), displayG);
 
 
     return 0;
