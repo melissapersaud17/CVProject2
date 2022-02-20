@@ -84,7 +84,9 @@ class Concavity{
 
        void plotOneRow(int x, int y, int **displayGraph);
 
-        void printGraph();
+        void printGraph(ofstream& outFile);
+
+        ~Concavity();
 
 
 };

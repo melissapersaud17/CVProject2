@@ -1,4 +1,4 @@
-#include "Concavity.h"
+#include "Concavity.cpp"
 
 #include <iostream>
 #include <fstream>
@@ -56,6 +56,7 @@ int main(int argc, char* argv[]){
             delete[] imageHeader;
    }
 
+
    //reading in file2
    int *peakPoints = new int[4]();
 
@@ -89,8 +90,8 @@ int main(int argc, char* argv[]){
     //the maxHeight will get set from the loadHist method 
     co.setMaxHeight(co.loadHist(inFile1));
 
-    //dynamically allocate displayGraph array and initalizes it 
-    const int rows = co.getMax()+1;
+    // //dynamically allocate displayGraph array and initalizes it 
+    const int rows = co.getMax() + 1;
     const int columns = co.getMaxHeight() + 1;
     int **displayG =  new int*[rows];
 
@@ -113,7 +114,24 @@ int main(int argc, char* argv[]){
     co.setYIntercept(yIntercept);
 
 
-    co.DeepestConcavity(co.getX1(),co.getX2(), co.getSlope(), co.getYIntercept(), displayG);
+    int thresholdValue = co.DeepestConcavity(co.getX1(),co.getX2(), co.getSlope(), co.getYIntercept(), displayG);
+    co.setThrVal(thresholdValue);
+
+    outFile << "Threshold value is " << co.getThrValue() << endl;
+
+    co.printGraph(outFile);
+
+    // for(int i = 0; i < rows; i++){
+    //     delete displayG[i];
+    // }
+    // delete[] displayG;
+
+    // delete[] histogram;
+
+    //close all files
+    inFile1.close();
+    inFile2.close();
+    outFile.close();
 
 
     return 0;

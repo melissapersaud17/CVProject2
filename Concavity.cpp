@@ -6,7 +6,7 @@ using namespace std;
 
 
 Concavity::Concavity(){
-    cout << "concav construc" << endl;
+    //cout << "concav construc" << endl;
 }
 
 //setter and getter for rows
@@ -141,19 +141,19 @@ int Concavity::loadHist(ifstream& inFile){
            while (iss >> number){ 
                 this->histAry[index] = number;
             }
-
         }
     }
 
     //finding the maxHeight
-    int maxHeight = histAry[0];
+     int findingMaxHeight = this->histAry[0];
     for(int i = 1; i < this->getMax()+1; i++){
-        if(histAry[i] > maxHeight){
-            maxHeight = histAry[i];
+        if(this->histAry[i] > findingMaxHeight){
+            findingMaxHeight = this->histAry[i];
         }
     }
 
-    return maxHeight;
+    return findingMaxHeight;
+
 }
 
 //display the histogram to the outfile 
@@ -185,20 +185,20 @@ int Concavity::DeepestConcavity(int x1, int x2, double slope, double yIntercept,
     int thr = first;
 
     while(x <= second){
-        cout << "inside concavity " <<endl;
+        //cout << "inside concavity " <<endl;
         int y = (slope * x) + yIntercept;
 
-        cout << "inside concavity y = " << y << endl;
+       // cout << "inside concavity y = " << y << endl;
         
         plotOneRow(x,y,displayGraph);
 
         int gap = abs(this->histAry[x] - y);
-        cout << "gap is " << gap << endl;
+        // cout << "gap is " << gap << endl;
         if(gap > max){
             max = gap;
             thr = x;
-            x++;
         }
+        x++;
     }
 
     return thr;
@@ -209,22 +209,35 @@ void Concavity::plotOneRow(int x, int y, int **displayGraph){
     int index = min(this->histAry[x],y);
     int last = max(this->histAry[x],y);
 
-    cout << "inside plotonerow method " <<endl;
-    cout << "index is " << index << endl;
-    cout << "last is " << last << endl;
-
     while(index <= last){
-        cout << "inside plotonerow while loop " <<endl;
-
         this->displayGraphs[x][index] = 3;
         index++;
     }
 
-    cout << "index after is " << index << endl;
     this->displayGraphs[x][this->histAry[x]] = 1;
     this->displayGraphs[x][last] = 2;
+}
 
-    
+void Concavity::printGraph(ofstream& outFile){
+    int rows = this->getMax()+1;
+    int columns = this->getMaxHeight() + 1;
+    for(int i =0; i < rows; i++){
+        for(int x = 0; x < columns; x++){
+            if(displayGraphs[i][x] == 0){
+                outFile << " ";
+            }else if (displayGraphs[i][x] == 1){
+                outFile << "*";
+            }else if(displayGraphs[i][x] == 2){
+                outFile << "+";
+            }else if(displayGraphs[i][x] == 3){
+                outFile << "=";
+            }
+        }
+        outFile << endl;
+    }
+}
 
-
+Concavity::~Concavity(){
+    delete[] histAry;
+    delete[] displayGraphs;
 }
