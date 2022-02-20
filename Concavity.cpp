@@ -5,18 +5,14 @@
 using namespace std;
 
 
+//constructor
 Concavity::Concavity(){
-    //cout << "concav construc" << endl;
 }
 
-//setter and getter for rows
+//setter methods for rows, columns, minVal and MaxVal
 void Concavity::setRows(int rows){
     this->numRows = rows;
 }
-
-// int Concavity::getRows(){
-//     return this->numRows;
-// }
 
 void Concavity::setCols(int cols){
     this->numCols = cols;
@@ -30,6 +26,7 @@ void Concavity::setMax(int max){
     this->maxVal = max;
 }
 
+//getter method to return the maxVal
 int Concavity::getMax(){
     return this->maxVal;
 }
@@ -88,7 +85,7 @@ double Concavity::getYIntercept(){
     return this->b;
 }
 
-//setter for the array
+//setter and getter method for the histogram array
 void Concavity::setArray(int *histogramArray){
     this->histAry = histogramArray;
 }
@@ -97,6 +94,7 @@ int* Concavity::getArray(){
     return this->histAry;
 }
 
+//setter and getter method for the maxHeight
 void Concavity::setMaxHeight(int maxHeight){
     this->maxHeight = maxHeight;
 }
@@ -105,6 +103,7 @@ int Concavity::getMaxHeight(){
     return this->maxHeight;
 }
 
+//setter method for displaying the graph
 void Concavity::setGraph(int **displayGraph){
     this->displayGraphs = displayGraph;
 }
@@ -118,15 +117,13 @@ int Concavity::getThrValue(){
     return this->bestThrVal;
 }
 
-
 //loads the histogram array and then returns the max height
 int Concavity::loadHist(ifstream& inFile){
 
-    int i = 0;
-
+    //variables used to obtain the values from the inFile
     string line;
-    int number; 
     istringstream iss;
+    int number; 
 
     if(inFile.is_open()){
         while(!inFile.eof()){
@@ -134,18 +131,18 @@ int Concavity::loadHist(ifstream& inFile){
 
             iss.clear();
             iss.str(line);
-
-           iss >> number;
-           int index = number;
-
-           while (iss >> number){ 
+            
+            iss >> number;
+            int index = number;
+            
+            while (iss >> number){ 
                 this->histAry[index] = number;
             }
         }
     }
 
     //finding the maxHeight
-     int findingMaxHeight = this->histAry[0];
+    int findingMaxHeight = this->histAry[0];
     for(int i = 1; i < this->getMax()+1; i++){
         if(this->histAry[i] > findingMaxHeight){
             findingMaxHeight = this->histAry[i];
@@ -153,7 +150,6 @@ int Concavity::loadHist(ifstream& inFile){
     }
 
     return findingMaxHeight;
-
 }
 
 //display the histogram to the outfile 
@@ -161,6 +157,7 @@ void Concavity::dispHist(ofstream& outFile){
     int *pointer2 = (this->getArray());
         
     outFile << "2D Display of histogram " << endl;
+    outFile << endl;
     if(outFile.is_open()){
         for (int i = 0; i < this->getMax() + 1; i++){
             outFile <<  i  << " " << "(" << pointer2[i] << "):";
@@ -176,7 +173,6 @@ void Concavity::dispHist(ofstream& outFile){
 }
 
 //deepestConcavity method
-
 int Concavity::DeepestConcavity(int x1, int x2, double slope, double yIntercept, int **displayGraph){
     int max = 0;
     int first = x1;
@@ -185,15 +181,12 @@ int Concavity::DeepestConcavity(int x1, int x2, double slope, double yIntercept,
     int thr = first;
 
     while(x <= second){
-        //cout << "inside concavity " <<endl;
         int y = (slope * x) + yIntercept;
-
-       // cout << "inside concavity y = " << y << endl;
         
         plotOneRow(x,y,displayGraph);
 
         int gap = abs(this->histAry[x] - y);
-        // cout << "gap is " << gap << endl;
+
         if(gap > max){
             max = gap;
             thr = x;
@@ -218,6 +211,7 @@ void Concavity::plotOneRow(int x, int y, int **displayGraph){
     this->displayGraphs[x][last] = 2;
 }
 
+//printGraph method
 void Concavity::printGraph(ofstream& outFile){
     int rows = this->getMax()+1;
     int columns = this->getMaxHeight() + 1;

@@ -57,7 +57,7 @@ int main(int argc, char* argv[]){
    }
 
 
-   //reading in file2
+   //reading in file2 to get the peak points
    int *peakPoints = new int[4]();
 
    if(inFile2.good()){
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]){
     //the maxHeight will get set from the loadHist method 
     co.setMaxHeight(co.loadHist(inFile1));
 
-    // //dynamically allocate displayGraph array and initalizes it 
+    //dynamically allocate displayGraph array and initalizes it 
     const int rows = co.getMax() + 1;
     const int columns = co.getMaxHeight() + 1;
     int **displayG =  new int*[rows];
@@ -108,25 +108,19 @@ int main(int argc, char* argv[]){
     double run = co.getX2() - co.getX1();
     co.setSlope(rise/run);
 
-
     //calculating the y-intercept
     double yIntercept = co.getY1() - (co.getSlope() * co.getX1());
     co.setYIntercept(yIntercept);
 
-
+    //calculating the best threshold value
     int thresholdValue = co.DeepestConcavity(co.getX1(),co.getX2(), co.getSlope(), co.getYIntercept(), displayG);
     co.setThrVal(thresholdValue);
 
+    outFile << endl;
     outFile << "Threshold value is " << co.getThrValue() << endl;
 
+    //printing the graph
     co.printGraph(outFile);
-
-    // for(int i = 0; i < rows; i++){
-    //     delete displayG[i];
-    // }
-    // delete[] displayG;
-
-    // delete[] histogram;
 
     //close all files
     inFile1.close();
